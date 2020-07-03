@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_shop/brands/samsung.dart';
 import 'package:mobile_shop/component/main_drawer.dart';
 import 'package:mobile_shop/screens/about.dart';
 import 'package:mobile_shop/screens/contacts.dart';
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: "Cairo"),
       title: "Mobile Store",
       initialRoute: Home.route,
       routes: {
@@ -24,6 +26,7 @@ class MyApp extends StatelessWidget {
         AboutApp.route: (context) => AboutApp(),
         Setting.route: (context) => Setting(),
         Contacts.route: (context) => Contacts(),
+        Samsung.route: (context) => Samsung(),
       },
     );
   }
