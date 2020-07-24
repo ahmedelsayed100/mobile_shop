@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_shop/login/login.dart';
 import 'package:mobile_shop/screens/about.dart';
 import 'package:mobile_shop/screens/contacts.dart';
 import 'package:mobile_shop/screens/departments.dart';
@@ -13,30 +14,30 @@ class MainDrawer extends StatefulWidget {
 
 class _MainDrawerState extends State<MainDrawer> {
   final TextStyle _textStyle = TextStyle(
-    fontSize: 20,
-    color: Colors.blue,
+    fontSize: 18,
+    color: Colors.black,
     fontFamily: 'Cairo',
   );
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.6,
+      width: MediaQuery.of(context).size.width * 0.7,
       child: Drawer(
         elevation: 3,
         child: ListView(
           children: <Widget>[
             acountInformation("Ahmed Elsayed", "ahmedfci5502gmail.com",
-                "assets/images/flower.jpg"),
+                "assets/images/p2.jpg"),
             listTilIitem("الرئيسية", Icons.home, Home.route),
             listTilIitem("الأقسام", Icons.category, Departments.route),
             Divider(
               color: Colors.red,
-              height: 5,
+              height: 1,
             ),
             listTilIitem("الإعدادات", Icons.settings, Setting.route),
             listTilIitem("التواصل", Icons.call, Contacts.route),
             listTilIitem("حول", Icons.info, AboutApp.route),
-            listTilIitem("تسجيل الخروج", Icons.exit_to_app, ""),
+            listTilIitem("تسجيل الدخول", Icons.exit_to_app, Login.route),
           ],
         ),
       ),
@@ -48,8 +49,9 @@ class _MainDrawerState extends State<MainDrawer> {
     return UserAccountsDrawerHeader(
       accountName: Text(
         userName,
+        textAlign: TextAlign.right,
         style: TextStyle(
-          color: Colors.black,
+          color: Colors.blue[900],
           fontSize: 20,
         ),
       ),
@@ -62,12 +64,14 @@ class _MainDrawerState extends State<MainDrawer> {
       ),
       currentAccountPicture: CircleAvatar(
         child: Icon(Icons.person),
+        backgroundImage: ExactAssetImage(imgUrl),
+        backgroundColor: Colors.yellow,
       ),
       decoration: BoxDecoration(
         color: Colors.yellow,
         image: DecorationImage(
           image: AssetImage(
-            imgUrl,
+            "assets/images/flower.jpg",
           ),
           fit: BoxFit.cover,
         ),
@@ -81,14 +85,14 @@ class _MainDrawerState extends State<MainDrawer> {
 //this is the listtile for make the drawer elements to navigate to it
   Widget listTilIitem(String title, IconData icon, String distination) {
     return ListTile(
-      contentPadding: const EdgeInsets.all(8),
+      // contentPadding: const EdgeInsets.all(1),
       title: Text(
         title,
         style: _textStyle,
       ),
-      trailing: Icon(
+      leading: Icon(
         icon,
-        size: 30,
+        size: 28,
         color: Colors.blue,
       ),
       onTap: () {

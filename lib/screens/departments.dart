@@ -1,13 +1,20 @@
+// import 'dart:convert';
+// import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
+// import 'package:mobile_shop/brands/details.dart';
+import 'package:mobile_shop/brands/page_details.dart';
 import 'package:mobile_shop/component/general_code.dart';
+// import 'package:mobile_shop/component/general_code.dart';
 import 'package:mobile_shop/component/main_drawer.dart';
 import 'package:mobile_shop/screens/home.dart';
 
 class Departments extends StatelessWidget {
   static final route = "departments";
+  final Home home = Home();
+  final MyBrands brands = MyBrands();
   @override
   Widget build(BuildContext context) {
-    final Home home = Home();
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -25,12 +32,8 @@ class Departments extends StatelessWidget {
         drawer: MainDrawer(),
         body: Container(
           color: Colors.amberAccent[100],
-          child: home.departmentsElements(
-            context,
-            1.0,
-            0.0,
-            MyBrands.brands,
-          ),
+          child: brands.departmentsElements(
+              context, 1.0, 0.0, MyBrands.brands, Samsung.route),
         ),
       ),
     );

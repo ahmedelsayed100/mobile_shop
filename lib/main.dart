@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_shop/brands/samsung.dart';
+import 'package:mobile_shop/brands/page_details.dart';
 import 'package:mobile_shop/component/main_drawer.dart';
+import 'package:mobile_shop/login/login.dart';
 import 'package:mobile_shop/screens/about.dart';
 import 'package:mobile_shop/screens/contacts.dart';
 import 'package:mobile_shop/screens/departments.dart';
 import 'package:mobile_shop/screens/home.dart';
 import 'package:mobile_shop/screens/settings.dart';
+
+import 'component/country.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,7 +21,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Cairo"),
       title: "Mobile Store",
-      initialRoute: Home.route,
+      home: Country(),
+      // initialRoute: Home.route,
       routes: {
         Home.route: (context) => Home(),
         MainDrawer.route: (context) => MainDrawer(),
@@ -27,6 +31,7 @@ class MyApp extends StatelessWidget {
         Setting.route: (context) => Setting(),
         Contacts.route: (context) => Contacts(),
         Samsung.route: (context) => Samsung(),
+        Login.route: (ctx) => Login(),
       },
     );
   }
