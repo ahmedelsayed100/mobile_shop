@@ -86,15 +86,28 @@ class _CountryState extends State<Country> {
   }
 
   Widget radiolistTile(int index) {
-    return RadioListTile(
-        value: countries[index],
-        groupValue: isSelected,
-        title: Text(countries[index]),
-        onChanged: (value) {
-          setState(() {
-            isSelected = value;
-          });
-          saveSelectedCountery(isSelected);
-        });
+    return ListTile(
+      leading: Row(
+        children: <Widget>[
+          Checkbox(
+              value: false,
+              onChanged: (val) {
+                setState(() {
+                  val = !val;
+                });
+              })
+        ],
+      ),
+      title: RadioListTile(
+          value: countries[index],
+          groupValue: isSelected,
+          title: Text(countries[index]),
+          onChanged: (value) {
+            setState(() {
+              isSelected = value;
+            });
+            saveSelectedCountery(isSelected);
+          }),
+    );
   }
 }

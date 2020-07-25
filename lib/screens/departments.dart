@@ -1,11 +1,8 @@
-// import 'dart:convert';
-// import 'package:http/http.dart' as http;
-
 import 'package:flutter/material.dart';
-// import 'package:mobile_shop/brands/details.dart';
+
 import 'package:mobile_shop/brands/page_details.dart';
 import 'package:mobile_shop/component/general_code.dart';
-// import 'package:mobile_shop/component/general_code.dart';
+
 import 'package:mobile_shop/component/main_drawer.dart';
 import 'package:mobile_shop/screens/home.dart';
 
@@ -31,7 +28,7 @@ class Departments extends StatelessWidget {
         ),
         drawer: MainDrawer(),
         body: Container(
-          color: Colors.amberAccent[100],
+          color: Colors.grey[300],
           child: brands.departmentsElements(
               context, 1.0, 0.0, MyBrands.brands, Samsung.route),
         ),

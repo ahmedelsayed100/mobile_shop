@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mobile_shop/screens/home.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   static final route = "login";
@@ -21,6 +22,24 @@ class _LoginState extends State<Login> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _repasswordControll = TextEditingController();
+
+  saveUserInfo(String username, String email) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("username", username);
+    prefs.setString("email", email);
+    // print(prefs.setString("country", country));
+  }
+
+  @override
+  void dispose() {
+    _usernameController.text = "";
+    _passwordController.text = "";
+    _emailController.text = "";
+    _repasswordControll.text = "";
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final mqh = MediaQuery.of(context).size.height;
@@ -37,50 +56,14 @@ class _LoginState extends State<Login> {
               height: mqh,
               width: mqw,
             ),
-            //this code for the top 1/2 circle
-            Positioned(
-              child: Transform.scale(
-                scale: 1.2,
-                child: Transform.translate(
-                  offset: isLogin
-                      ? Offset(0, -mqh * 0.36)
-                      : Offset(0, -mqh * 0.395),
-                  child: AnimatedContainer(
-                    // curve: Curves.bounceInOut,
-                    duration: Duration(milliseconds: 500),
-                    width: mqw,
-                    height: mqw,
-                    decoration: BoxDecoration(
-                      color: isLogin ? Colors.brown[800] : Colors.blue[500],
-                      borderRadius: BorderRadius.circular(mqh),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            //this code for the left 1/2 circle
-            Positioned(
-              top: mqh * 0.38,
-              child: Transform.scale(
-                scale: 1,
-                child: Transform.translate(
-                  offset: Offset(-mqh * 0.46, 0),
-                  child: AnimatedContainer(
-                    curve: Curves.bounceInOut,
-                    duration: Duration(milliseconds: 500),
-                    width: mqw,
-                    height: mqw,
-                    decoration: BoxDecoration(
-                      color: isLogin ? Colors.blue[300] : Colors.grey[500],
-                      borderRadius: BorderRadius.circular(mqh),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            //this code for calling the code to draw the 1/2 circle at the top of page
+            positinedForDrawingCircles(mqh, mqw),
+            //this code for calling the code to draw the 1/2 circle at the top of page
+            positionedForDrawingLeftCircles(mqh, mqh),
+
             //this code for the content of the page
             Container(
-              margin: EdgeInsets.only(top: mqh * 0.05),
+              margin: EdgeInsets.only(top: mqh * 0.039),
               height: mqh,
               child: SingleChildScrollView(
                 child: Center(
@@ -94,33 +77,36 @@ class _LoginState extends State<Login> {
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(
-                        height: mqh * 0.03,
+                        height: mqh * 0.025,
                       ),
                       //this code for the content of circle avatar
-
-                      AnimatedContainer(
-                        duration: Duration(milliseconds: 500),
-                        width: isLogin ? mqw * 0.25 : mqw * 0.20,
-                        height: isLogin ? mqh * 0.15 : mqh * 0.12,
-                        decoration: BoxDecoration(
-                            color: isLogin ? Colors.yellow : Colors.grey[400],
-                            borderRadius: BorderRadius.circular(50),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black,
-                                  blurRadius: 3,
-                                  spreadRadius: 0.1),
-                            ]),
-                        //this code for the icons inside the circle avatar
-                        child: Stack(
-                          children: <Widget>[
-                            positionedIcon(Icons.person, 50, 20),
-                            positionedIcon(Icons.arrow_back, 29, 55),
-                          ],
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 500),
+                          width: isLogin ? mqw * 0.22 : mqw * 0.20,
+                          height: isLogin ? mqh * 0.13 : mqh * 0.12,
+                          decoration: BoxDecoration(
+                              color: isLogin ? Colors.yellow : Colors.grey[400],
+                              borderRadius: BorderRadius.circular(50),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black,
+                                    blurRadius: 3,
+                                    spreadRadius: 0.1),
+                              ]),
+                          //this code for the icons inside the circle avatar
+                          child: Stack(
+                            children: <Widget>[
+                              positionedIcon(Icons.person, 50, 22),
+                              positionedIcon(
+                                  Icons.arrow_back, 29, isLogin ? 46 : 55),
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(
-                        height: 8,
+                        height: 4,
                       ),
 
                       ///******************************************
@@ -133,7 +119,7 @@ class _LoginState extends State<Login> {
                         child: AnimatedContainer(
                           duration: Duration(milliseconds: 500),
                           curve: Curves.easeInOutCirc,
-                          height: isLogin ? mqh * 0.628 : mqh * 0.7,
+                          height: isLogin ? mqh * 0.56 : mqh * 0.7,
                           width: mqw * 0.8,
                           child: Card(
                             borderOnForeground: true,
@@ -149,7 +135,7 @@ class _LoginState extends State<Login> {
                                   children: <Widget>[
                                     //this code for the field og the user name
                                     Padding(
-                                      padding: EdgeInsets.only(bottom: 10),
+                                      padding: const EdgeInsets.only(bottom: 5),
                                       child: Text(
                                         isLogin
                                             ? "البريد الألكتروني"
@@ -172,7 +158,7 @@ class _LoginState extends State<Login> {
                                     //this is the lable for password
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          top: 8.0, bottom: 8),
+                                          top: 4.0, bottom: 4),
                                       child: Text(
                                         "الرقم السري",
                                         textAlign: TextAlign.left,
@@ -193,7 +179,7 @@ class _LoginState extends State<Login> {
                                     !isLogin
                                         ? Padding(
                                             padding: const EdgeInsets.only(
-                                                top: 8.0, bottom: 8),
+                                                top: 4.0, bottom: 4),
                                             child: Text(
                                               "تأكيد الرقم السري",
                                               textAlign: TextAlign.left,
@@ -214,7 +200,7 @@ class _LoginState extends State<Login> {
                                     !isLogin
                                         ? Padding(
                                             padding: const EdgeInsets.only(
-                                                top: 8.0, bottom: 8),
+                                                top: 4.0, bottom: 4),
                                             child: Text(
                                               "البريد الإلكتروني",
                                               textAlign: TextAlign.left,
@@ -241,16 +227,16 @@ class _LoginState extends State<Login> {
                                             lable: "هل نسيت كلمة المرور؟",
                                             myfun: () {})
                                         : SizedBox(
-                                            height: 10,
+                                            height: 4,
                                           ),
                                     SizedBox(
-                                      height: 10,
+                                      height: 4,
                                     ),
                                     //calling the login button code
                                     centerForLoginButton(mqh),
                                     //calling the create acount password inkwell code
                                     SizedBox(
-                                      height: 20,
+                                      height: 6,
                                     ),
                                     isLogin
                                         ? Center(
@@ -273,7 +259,7 @@ class _LoginState extends State<Login> {
                                                   " لديك حساب ؟  |\t تسجيل الدخول؟",
                                               myfun: () {
                                                 setState(() {
-                                                  pageTitle = "تسجيل الدخول؟";
+                                                  pageTitle = "تسجيل الدخول";
                                                   isLogin = true;
                                                 });
                                               },
@@ -286,6 +272,79 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       ),
+
+                      !isLogin
+                          ? Center(
+                              child: Text(
+                                "or",
+                                style: TextStyle(
+                                    fontSize: 25, fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          : SizedBox(),
+
+                      //this code for face and google sign in
+                      !isLogin
+                          ? Padding(
+                              padding: const EdgeInsets.only(bottom: 10.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  InkWell(
+                                    onTap: () {},
+                                    child: Container(
+                                      margin:
+                                          EdgeInsets.only(right: 5, left: 4),
+                                      padding:
+                                          EdgeInsets.fromLTRB(12, 4, 12, 4),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.redAccent,
+                                      ),
+                                      child: Row(
+                                        children: <Widget>[
+                                          signButtonWithSocail(
+                                              imgUrl:
+                                                  'assets/images/gogle.png'),
+                                          Text(
+                                            "Sign With",
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                color: Colors.white),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {},
+                                    child: Container(
+                                      margin:
+                                          EdgeInsets.only(right: 5, left: 4),
+                                      padding:
+                                          EdgeInsets.fromLTRB(12, 4, 12, 4),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.blueAccent,
+                                      ),
+                                      child: Row(
+                                        children: <Widget>[
+                                          signButtonWithSocail(
+                                              imgUrl: 'assets/images/face.png'),
+                                          Text(
+                                            "Sign in with",
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                color: Colors.white),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : SizedBox(),
                     ],
                   ),
                 ),
@@ -296,6 +355,52 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+
+  //this code for the top 1/2 circle
+  Widget positinedForDrawingCircles(double mqh, double mqw) {
+    return Positioned(
+      child: Transform.scale(
+        scale: 1.2,
+        child: Transform.translate(
+          offset: isLogin ? Offset(0, -mqh * 0.375) : Offset(0, -mqh * 0.395),
+          child: AnimatedContainer(
+            // curve: Curves.bounceInOut,
+            duration: Duration(milliseconds: 500),
+            width: mqw,
+            height: mqw,
+            decoration: BoxDecoration(
+              color: isLogin ? Colors.brown[800] : Colors.blue[500],
+              borderRadius: BorderRadius.circular(mqh),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  //this code for the left 1/2 circle
+  Widget positionedForDrawingLeftCircles(double mqh, double mqw) {
+    return Positioned(
+      top: mqh * 0.23,
+      child: Transform.scale(
+        scale: 1,
+        child: Transform.translate(
+          offset: Offset(-mqh * 0.5, 0),
+          child: AnimatedContainer(
+            curve: Curves.bounceInOut,
+            duration: Duration(milliseconds: 500),
+            width: mqw,
+            height: mqw,
+            decoration: BoxDecoration(
+              color: isLogin ? Colors.blue[300] : Colors.grey[500],
+              borderRadius: BorderRadius.circular(mqh),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  //this code for making the text field to use it with all user inputs
 
   Widget textFieldContainer(
       {String hintText,
@@ -369,6 +474,7 @@ class _LoginState extends State<Login> {
     );
   }
 
+//this code for making the inkwell text for forgetting password
   Widget forForgetPasswordOrSignUp({double mqh, String lable, Function myfun}) {
     return SizedBox(
       height: mqh * 0.056,
@@ -386,18 +492,19 @@ class _LoginState extends State<Login> {
     );
   }
 
+//this code for making the login and sign up button
   Widget centerForLoginButton(double mqh) {
     return Center(
       child: RaisedButton(
         onPressed: () async {
           var data = isLogin
               ? {
-                  'email': _emailController.text,
+                  'email': _emailController.text.toLowerCase(),
                   'password': _passwordController.text
                 }
               : {
                   'username': _usernameController.text,
-                  'email': _emailController.text,
+                  'email': _emailController.text.toLowerCase(),
                   'password': _passwordController.text,
                 };
           var url = isLogin
@@ -410,23 +517,33 @@ class _LoginState extends State<Login> {
           if (isLogin) {
             if (_loginKey.currentState.validate()) {
               if (responseBody['status'] == "success") {
+                //this to deploy alert dialog to make loding before login
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                          content: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10, right: 40),
+                            child: Text("Loading.."),
+                          ),
+                          CircularProgressIndicator(),
+                        ],
+                      ));
+                    });
+                saveUserInfo(responseBody['username'], responseBody['email']);
                 Navigator.of(context).pushNamed(Home.route);
               } else {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      content: Text("Username or password not correct!"),
-                      title: Text("Error"),
-                      actions: <Widget>[
-                        FlatButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text("موافق")),
-                      ],
-                    );
-                  },
+                //this to deploy alert dialog to tell user somthing wrong
+                showAlertDialog(
+                  alertMessage: "البريد او الرقم السري خطا!",
+                  titleMessage: "خطا",
+                  flatButton: FlatButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text("موافق")),
                 );
               }
             }
@@ -434,59 +551,36 @@ class _LoginState extends State<Login> {
           if (!isLogin) {
             if (_registerKey.currentState.validate()) {
               if (responseBody['status'] == "success") {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      content: Text(
-                        "تم إضافة مستخدم جديد",
-                        textAlign: TextAlign.right,
-                      ),
-                      title: Text(
-                        "إشعار",
-                        textAlign: TextAlign.right,
-                      ),
-                      actions: <Widget>[
-                        FlatButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text(
-                            "موافق",
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
+                //this code to deploy alert message to tell user that new user added
+
+                showAlertDialog(
+                  alertMessage: "تم إضافة مستخدم جديد",
+                  titleMessage: "إشعار",
+                  flatButton: FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "موافق",
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
                 );
+
                 Navigator.of(context).pushNamed(Home.route);
               } else {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      content: Text(
-                        "!هذا البريد موجود بالفعل",
-                        textAlign: TextAlign.right,
-                      ),
-                      title: Text(
-                        "خطا",
-                        textAlign: TextAlign.right,
-                      ),
-                      actions: <Widget>[
-                        FlatButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text(
-                            "موافق",
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
+                //this code to deploy alert message to tell user this email already exist
+                showAlertDialog(
+                  alertMessage: "!هذا البريد موجود بالفعل",
+                  titleMessage: "خطا",
+                  flatButton: FlatButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        "موافق",
+                        textAlign: TextAlign.left,
+                      )),
                 );
               }
             }
@@ -512,6 +606,25 @@ class _LoginState extends State<Login> {
     );
   }
 
+//this code for alert user about somthing
+  void showAlertDialog(
+      {var alertMessage, var titleMessage, FlatButton flatButton}) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text("$alertMessage"),
+          title: Text("$titleMessage"),
+          actions: <Widget>[
+            // FlatButton(onPressed: myFun, child: Text("موافق")),
+            flatButton
+          ],
+        );
+      },
+    );
+  }
+
+//this code for drawing icon inside the circle avatar
   Widget positionedIcon(IconData iconData, double size, double left) {
     return Positioned(
       top: isLogin ? 20 : 10,
@@ -524,6 +637,19 @@ class _LoginState extends State<Login> {
         color: isLogin ? Colors.grey[600] : Colors.white,
         // color: Colors.si,
       ),
+    );
+  }
+
+//this code for make sign in using facebook
+  Widget signButtonWithSocail({String imgUrl, String destination}) {
+    return Container(
+      height: 50,
+      width: 50,
+      decoration: BoxDecoration(shape: BoxShape.circle),
+      child: CircleAvatar(
+        backgroundImage: ExactAssetImage("$imgUrl"),
+      ),
+      margin: EdgeInsets.only(left: 10),
     );
   }
 }

@@ -8,27 +8,37 @@ class MyBrands {
     "iphone",
     "oppo",
     "xioma",
-    "infinx",
-    "tecno",
-    "lenovo",
     "real me",
+    "samsung",
+    "huwawi",
+    "iphone",
     "oppo",
     "xioma",
-    "infinx",
+    "real me",
+  ];
+  static List<String> newProducts = [
+    "assets/images/p1.jpg",
+    "assets/images/p2.jpg",
+    "assets/images/p3.jpg",
+    "assets/images/p4.jpg",
+    "assets/images/p1.jpg",
+    "assets/images/p2.jpg",
+    "assets/images/p3.jpg",
+    "assets/images/p4.jpg",
   ];
   static List<String> images = [
-    "assets/images/p1.jpg",
-    "assets/images/p2.jpg",
-    "assets/images/p3.jpg",
-    "assets/images/p4.jpg",
-    "assets/images/p1.jpg",
-    "assets/images/p2.jpg",
-    "assets/images/p3.jpg",
-    "assets/images/p4.jpg",
-    "assets/images/p1.jpg",
-    "assets/images/p2.jpg",
-    "assets/images/p3.jpg",
-    "assets/images/p4.jpg",
+    "assets/images/brands/samsung.jpg",
+    "assets/images/brands/huawei.jpg",
+    "assets/images/brands/iphone.jpg",
+    "assets/images/brands/oppo.jpg",
+    "assets/images/brands/xioma.jpg",
+    "assets/images/brands/realme.jpg",
+    "assets/images/brands/samsung.jpg",
+    "assets/images/brands/huawei.jpg",
+    "assets/images/brands/iphone.jpg",
+    "assets/images/brands/oppo.jpg",
+    "assets/images/brands/xioma.jpg",
+    "assets/images/brands/realme.jpg",
   ];
   Widget departmentsElements(BuildContext context, double height1,
       double paddingHeight, List<String> brand, String destination) {
@@ -63,7 +73,7 @@ class MyBrands {
                   child: InkWell(
                     child: Image.asset(
                       images[position],
-                      fit: BoxFit.contain,
+                      fit: BoxFit.fill,
                     ),
                     onTap: () {
                       // Navigator.of(context).pop(brand[position]);

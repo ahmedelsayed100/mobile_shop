@@ -4,7 +4,9 @@ import 'package:mobile_shop/screens/about.dart';
 import 'package:mobile_shop/screens/contacts.dart';
 import 'package:mobile_shop/screens/departments.dart';
 import 'package:mobile_shop/screens/home.dart';
+import 'package:mobile_shop/posts/post.dart';
 import 'package:mobile_shop/screens/settings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainDrawer extends StatefulWidget {
   static final route = "main drawer";
@@ -13,6 +15,29 @@ class MainDrawer extends StatefulWidget {
 }
 
 class _MainDrawerState extends State<MainDrawer> {
+  bool islogin = false;
+  String username;
+  String email;
+  getUserInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    username = prefs.getString("username");
+    email = prefs.getString("email");
+    setState(() {
+      if (username != null) {
+        username = prefs.getString("username");
+        email = prefs.getString("email");
+        islogin = true;
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    getUserInfo();
+
+    super.initState();
+  }
+
   final TextStyle _textStyle = TextStyle(
     fontSize: 18,
     color: Colors.black,
@@ -26,10 +51,13 @@ class _MainDrawerState extends State<MainDrawer> {
         elevation: 3,
         child: ListView(
           children: <Widget>[
-            acountInformation("Ahmed Elsayed", "ahmedfci5502gmail.com",
-                "assets/images/p2.jpg"),
+            acountInformation(username, email, "assets/images/p2.jpg"),
             listTilIitem("الرئيسية", Icons.home, Home.route),
             listTilIitem("الأقسام", Icons.category, Departments.route),
+            islogin
+                ? listTilIitem(
+                    "إضافة منشور", Icons.add_circle_outline, Post.route)
+                : SizedBox(),
             Divider(
               color: Colors.red,
               height: 1,
@@ -37,7 +65,9 @@ class _MainDrawerState extends State<MainDrawer> {
             listTilIitem("الإعدادات", Icons.settings, Setting.route),
             listTilIitem("التواصل", Icons.call, Contacts.route),
             listTilIitem("حول", Icons.info, AboutApp.route),
-            listTilIitem("تسجيل الدخول", Icons.exit_to_app, Login.route),
+            islogin
+                ? listTilIitem("تسجيل الخروج", Icons.exit_to_app, Home.route)
+                : listTilIitem("تسجيل الدخول", Icons.exit_to_app, Login.route),
           ],
         ),
       ),
@@ -48,18 +78,18 @@ class _MainDrawerState extends State<MainDrawer> {
   Widget acountInformation(String userName, String email, String imgUrl) {
     return UserAccountsDrawerHeader(
       accountName: Text(
-        userName,
+        !islogin ? "" : userName,
         textAlign: TextAlign.right,
         style: TextStyle(
-          color: Colors.blue[900],
+          color: Colors.white,
           fontSize: 20,
         ),
       ),
       accountEmail: Text(
-        email,
+        !islogin ? "" : email,
         style: TextStyle(
-          color: Colors.black,
-          fontSize: 20,
+          color: Colors.white,
+          fontSize: 16,
         ),
       ),
       currentAccountPicture: CircleAvatar(
@@ -68,12 +98,13 @@ class _MainDrawerState extends State<MainDrawer> {
         backgroundColor: Colors.yellow,
       ),
       decoration: BoxDecoration(
-        color: Colors.yellow,
+        // color: Colors.yellow,
         image: DecorationImage(
           image: AssetImage(
-            "assets/images/flower.jpg",
+            "assets/images/ground.jpg",
           ),
-          fit: BoxFit.cover,
+          fit: BoxFit.fill,
+          colorFilter: ColorFilter.mode(Colors.indigo, BlendMode.multiply),
         ),
       ),
       // arrowColor: Colors.amber[500],
@@ -92,12 +123,20 @@ class _MainDrawerState extends State<MainDrawer> {
       ),
       leading: Icon(
         icon,
-        size: 28,
+        size: 26,
         color: Colors.blue,
       ),
-      onTap: () {
-        Navigator.of(context).pop();
-        Navigator.of(context).pushNamed(distination);
+      onTap: () async {
+        if (!islogin) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.remove("username");
+          prefs.remove('email');
+
+          await Navigator.of(context).pushNamed(distination);
+        } else {
+          Navigator.of(context).pop();
+          Navigator.of(context).pushNamed(distination);
+        }
       },
     );
   }

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:mobile_shop/brands/page_details.dart';
 import 'package:mobile_shop/component/main_drawer.dart';
 import 'package:mobile_shop/login/login.dart';
+import 'package:mobile_shop/posts/comments.dart';
 import 'package:mobile_shop/screens/about.dart';
 import 'package:mobile_shop/screens/contacts.dart';
 import 'package:mobile_shop/screens/departments.dart';
 import 'package:mobile_shop/screens/home.dart';
+import 'package:mobile_shop/posts/post.dart';
 import 'package:mobile_shop/screens/settings.dart';
 
 import 'component/country.dart';
@@ -32,6 +34,8 @@ class MyApp extends StatelessWidget {
         Contacts.route: (context) => Contacts(),
         Samsung.route: (context) => Samsung(),
         Login.route: (ctx) => Login(),
+        Post.route: (ctx) => Post(),
+        Comments.route: (ctx) => Comments(),
       },
     );
   }

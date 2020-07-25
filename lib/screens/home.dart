@@ -6,9 +6,6 @@ import 'package:mobile_shop/component/general_code.dart';
 import 'package:mobile_shop/component/main_drawer.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:mobile_shop/component/search.dart';
-// import 'package:mobile_shop/screens/departments.dart';
-// import 'package:mobile_shop/screens/about.dart';
-// import 'package:mobile_shop/screens/about.dart';
 
 class Home extends StatefulWidget {
   static final route = "home";
@@ -18,18 +15,18 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   static List<String> images = [
-    "assets/images/p1.jpg",
-    "assets/images/p2.jpg",
-    "assets/images/p3.jpg",
-    "assets/images/p4.jpg",
-    "assets/images/p1.jpg",
-    "assets/images/p2.jpg",
-    "assets/images/p3.jpg",
-    "assets/images/p4.jpg",
-    "assets/images/p1.jpg",
-    "assets/images/p2.jpg",
-    "assets/images/p3.jpg",
-    "assets/images/p4.jpg",
+    "assets/images/brands/samsung.jpg",
+    "assets/images/brands/huawei.jpg",
+    "assets/images/brands/iphone.jpg",
+    "assets/images/brands/oppo.jpg",
+    "assets/images/brands/xioma.jpg",
+    "assets/images/brands/realme.jpg",
+    "assets/images/brands/samsung.jpg",
+    "assets/images/brands/huawei.jpg",
+    "assets/images/brands/iphone.jpg",
+    "assets/images/brands/oppo.jpg",
+    "assets/images/brands/xioma.jpg",
+    "assets/images/brands/realme.jpg",
   ];
 
   final List<dynamic> mobileList = [];
@@ -78,7 +75,7 @@ class _HomeState extends State<Home> {
         body: Container(
           color: Colors.grey.withOpacity(0.2),
           width: double.infinity,
-          height: double.infinity,
+          height: 800,
           child: ListView(
             // scrollDirection: Axis.vertical,
             children: <Widget>[
@@ -102,7 +99,7 @@ class _HomeState extends State<Home> {
 
   Widget carousleImageViwer(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.24,
+      height: MediaQuery.of(context).size.height * 0.32,
       width: double.infinity,
       child: Carousel(
         boxFit: BoxFit.cover,
@@ -111,31 +108,31 @@ class _HomeState extends State<Home> {
         animationDuration: Duration(milliseconds: 1000),
         dotSize: 5.0,
         overlayShadowColors: Colors.blueAccent.withOpacity(1),
-        dotIncreasedColor: Colors.yellow,
+        dotIncreasedColor: Colors.yellowAccent,
         dotBgColor: Colors.black.withOpacity(0.3),
         dotPosition: DotPosition.bottomCenter,
         overlayShadowSize: 5,
         overlayShadow: true,
-        dotVerticalPadding: 6.0,
+        dotVerticalPadding: 1.0,
         dotIncreaseSize: 2.5,
         showIndicator: true,
-        indicatorBgPadding: 5.0,
+        indicatorBgPadding: 8.0,
         images: [
           Image.asset(
-            "assets/images/p1.jpg",
+            MyBrands.newProducts[0],
             fit: BoxFit.cover,
           ),
           Image.asset(
-            "assets/images/p2.jpg",
+            MyBrands.newProducts[1],
             fit: BoxFit.cover,
           ),
           Image.asset(
-            "assets/images/p3.jpg",
+            MyBrands.newProducts[2],
             fit: BoxFit.cover,
           ),
           Image.asset(
-            "assets/images/p4.jpg",
-            fit: BoxFit.cover,
+            MyBrands.newProducts[3],
+            fit: BoxFit.fill,
           ),
         ],
       ),
@@ -198,7 +195,7 @@ class _HomeState extends State<Home> {
       height: MediaQuery.of(context).size.height * height1,
       padding: const EdgeInsets.all(8),
       child: GridView.builder(
-          itemCount: 12,
+          itemCount: MyBrands.newProducts.length,
           padding: EdgeInsets.only(
               bottom: MediaQuery.of(context).size.height * paddingHeight),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -212,34 +209,24 @@ class _HomeState extends State<Home> {
               margin: EdgeInsets.only(bottom: 5),
               child: Card(
                 elevation: 2,
-                child: GridTile(
-                  footer: Container(
-                    height: MediaQuery.of(context).size.height * 0.06,
-                    alignment: Alignment.center,
-                    color: Colors.black.withOpacity(0.5),
-                    child: Text(
-                      "${brand[position]}",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                margin: EdgeInsets.all(4),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GridTile(
+                    child: InkWell(
+                      child: Image.asset(
+                        MyBrands.newProducts[position],
+                        fit: BoxFit.cover,
+                      ),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (ctx) => Samsung(
+                                    pageName: brand[position],
+                                  )),
+                        );
+                      },
                     ),
-                  ),
-                  child: InkWell(
-                    child: Image.asset(
-                      images[position],
-                      fit: BoxFit.contain,
-                    ),
-                    onTap: () {
-                      // Navigator.of(context).pop(brand[position]);
-                      // Navigator.of(context).pushNamed(
-                      //   destination,
-                      // );
-
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (ctx) => Samsung(
-                                  pageName: brand[position],
-                                )),
-                      );
-                    },
                   ),
                 ),
               ),
