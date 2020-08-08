@@ -23,8 +23,9 @@ class _LoginState extends State<Login> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _repasswordControll = TextEditingController();
 
-  saveUserInfo(String username, String email) async {
+  saveUserInfo(String username, String email, String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("userid", id);
     prefs.setString("username", username);
     prefs.setString("email", email);
     // print(prefs.setString("country", country));
@@ -532,7 +533,8 @@ class _LoginState extends State<Login> {
                         ],
                       ));
                     });
-                saveUserInfo(responseBody['username'], responseBody['email']);
+                saveUserInfo(responseBody['username'], responseBody['email'],
+                    responseBody['id']);
                 Navigator.of(context).pushNamed(Home.route);
               } else {
                 //this to deploy alert dialog to tell user somthing wrong
